@@ -1,0 +1,208 @@
+#include <Ps3Controller.h>
+
+
+int DirA=33, PWMA=32;
+int DirB=25, PWMB=26;
+int DirC=27, PWMC=13;
+float Lx,Ly,Rx,Ry;
+//initializing direction and pwm pins
+
+
+void setup() 
+{
+  Serial.begin(115200);
+
+ //   Ps3.attach(note_t);//
+ //   Ps3.attachOnConnect(onConnect);//
+    Ps3.begin("01:02:03:04:05:06");
+
+    Serial.println("Ready.");
+
+    pinMode(DirA,OUTPUT);
+    pinMode(DirB,OUTPUT);
+    pinMode(DirC,OUTPUT);
+    pinMode(PWMA,OUTPUT);
+    pinMode(PWMB,OUTPUT);
+    pinMode(PWMC,OUTPUT);
+    stop();
+}
+//////////functions/////////
+void front()
+{
+  analogWrite(PWMA,0);
+  digitalWrite(DirB,HIGH);
+  analogWrite(PWMB,200);
+  digitalWrite(DirC,LOW);
+  analogWrite(PWMC,200);
+}
+void back()
+{
+  analogWrite(PWMA,0);
+  digitalWrite(DirB,LOW);
+  analogWrite(PWMB,200);
+  digitalWrite(DirC,HIGH);
+  analogWrite(PWMC,200);
+}
+void clockwise()
+{
+  digitalWrite(DirA,HIGH);
+  analogWrite(PWMA,200);
+  digitalWrite(DirB,HIGH);
+  analogWrite(PWMB,200);
+  digitalWrite(DirC,HIGH);
+  analogWrite(PWMC,200);
+
+}
+void anticlock()
+{
+  digitalWrite(DirA,LOW);
+  analogWrite(PWMA,200);
+  digitalWrite(DirB,LOW);
+  analogWrite(PWMB,200);
+  digitalWrite(DirC,LOW);
+  analogWrite(PWMC,200);
+}
+void rb()
+{
+  digitalWrite(DirA,HIGH);
+  analogWrite(PWMA,200);
+  digitalWrite(DirB,LOW);
+  analogWrite(PWMB,0);
+  digitalWrite(DirC,LOW);
+  analogWrite(PWMC,200);
+  //rightback
+}
+void rf()
+{
+  digitalWrite(DirA,HIGH);
+  analogWrite(PWMA,200);
+  digitalWrite(DirB,LOW);
+  analogWrite(PWMB,200);
+  digitalWrite(DirC,LOW);
+  analogWrite(PWMC,0);
+  //rightfront
+}
+void lb()
+{
+ digitalWrite(DirA,LOW);
+  analogWrite(PWMA,200);
+  digitalWrite(DirB,HIGH);
+  analogWrite(PWMB,200);
+  digitalWrite(DirC,LOW);
+  analogWrite(PWMC,0); 
+  //leftback
+}
+void lf()
+{
+  digitalWrite(DirA,LOW);
+  analogWrite(PWMA,200);
+  digitalWrite(DirB,LOW);
+  analogWrite(PWMB,0);
+  digitalWrite(DirC,HIGH);
+  analogWrite(PWMC,200); 
+  //leftfront
+}
+void right()
+{
+   digitalWrite(DirA,HIGH);
+  analogWrite(PWMA,200);
+  digitalWrite(DirB,LOW);
+  analogWrite(PWMB,200);
+  digitalWrite(DirC,LOW);
+  analogWrite(PWMC,200); 
+}
+void left()
+{
+  digitalWrite(DirA,LOW);
+  analogWrite(PWMA,200);
+  digitalWrite(DirB,HIGH);
+  analogWrite(PWMB,200);
+  digitalWrite(DirC,HIGH);
+  analogWrite(PWMC,200); 
+}
+void Ljoy()
+{
+  Lx=Ps3.data.analog.stick.lx;
+  Ly=Ps3.data.analog.stick.ly;
+  //leftjoystick
+}
+void Rjoy()
+{
+  Rx=Ps3.data.analog.stick.rx;
+  Ry=Ps3.data.analog.stick.ry;
+  //rightjoystick
+}
+
+void stop()
+{
+  analogWrite(PWMA,0);
+  analogWrite(PWMB,0);
+  analogWrite(PWMC,0);
+  
+}
+
+void loop() 
+{
+
+stop();        
+//left joystick//
+if(Ly <-30){
+while(Ly <-30)
+{
+  front();
+  Serial.println(Ly);
+  Ljoy();
+}
+}
+else if(Ly > 30){
+while(Ly > 30)
+{
+  back();
+  Serial.println(Ly);
+  Ljoy();
+}
+}
+
+else if(Lx > 30){
+while(Lx > 30)
+{
+  right();
+  Serial.println(Lx);
+  Ljoy();
+}
+}
+else if(Lx < -30){
+while(Lx < -30)
+{
+  left();
+  Serial.println(Lx);
+  Ljoy();
+}
+}
+if(Rx <-30){
+while(Ry <-30)
+{
+  anticlock();
+  Serial.println(Ly);
+  Rjoy();
+}
+}
+else if(Rx > 30){
+while(Rx > 30)
+{
+  clockwise();
+  Serial.println(Ly);
+  Rjoy();
+}
+}
+
+else
+{
+  stop();
+  Serial.println(Ly);
+  Rjoy();
+  Ljoy();
+}
+
+
+}
