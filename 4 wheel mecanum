@@ -1,4 +1,4 @@
-//mecanum wheel drive
+
 #include<Ps3Controller.h>
 int LFDir=1,LBDir=2,RFDir=3,RBDir=4,LFpwm=5,LBpwm=6,RFpwm=7,RBpwm=8; 
 float Lx,Rx,Ly,Ry;
