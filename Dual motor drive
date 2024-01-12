@@ -1,0 +1,51 @@
+#include "CytronMotorDriver.h"
+
+
+// Configure the motor driver.
+CytronMD motor1(PWM_PWM, 3, 9);   
+CytronMD motor2(PWM_PWM, 10, 11); 
+
+
+// The setup routine runs once when you press reset.
+void setup() {
+  
+}
+
+
+// The loop routine runs over and over again forever.
+void loop() {
+  //forward
+  motor1.setSpeed(128);   // Motor 1 runs forward.
+  motor2.setSpeed(132);  // Motor 2 runs forward.
+  delay(5000);
+  
+//stop
+  motor1.setSpeed(0);     // Motor 1 stops.
+  motor2.setSpeed(0);     // Motor 2 stops.
+  delay(2000);
+
+  //turn
+  motor1.setSpeed(-70);   // Motor 1 runs backward.
+  motor2.setSpeed(180);  // Motor 2 runs backward.
+  delay(3000);
+
+  //stop
+  motor1.setSpeed(0);     // Motor 1 stops.
+  motor2.setSpeed(0);     // Motor 2 stops.
+  delay(1000);
+
+  //forward
+  motor1.setSpeed(128);  // Motor 1 runs forward.
+  motor2.setSpeed(132);   // Motor 2 runs forward.
+  delay(5000);
+
+  //turn
+  motor1.setSpeed(-70);   // Motor 1 runs backward.
+  motor2.setSpeed(180);  // Motor 2 runs forward.
+  delay(3000);
+
+  //stop
+  motor1.setSpeed(0);     // Motor 1 stops.
+  motor2.setSpeed(0);     // Motor 2 stops.
+  delay(1000);
+}
