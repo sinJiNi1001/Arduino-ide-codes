@@ -1,0 +1,22 @@
+char value;
+void setup() {
+Serial.begin(9600);
+pinMode(9,OUTPUT);
+}
+
+void loop()
+{
+  if(Serial.available()>0){
+  value=Serial.read();
+  if(value=='1'){
+    Serial.println("value=1");
+    digitalWrite(9,HIGH);
+    delay(1000);
+  }
+  else if(value=='0'){
+    Serial.println("value=0");
+    digitalWrite(9,LOW);
+    delay(1000);
+  }
+}
+}
