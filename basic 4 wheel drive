@@ -1,0 +1,184 @@
+#include <ps5Controller.h>
+int Ain1, Ain2, Apwm;
+int Bin1,Bin2,Bpwm;
+int Cin1,Cin2,Cpwm;
+int Din1,Din2,Dpwm;
+float Lx,Ly,Rx,Ry;
+int i,xyz,k;
+//initializing signal and pwm pins
+//initializing joystick axes
+void setup() 
+{
+  Serial.begin(11500);
+  ps5.begin("00.00.00.00.00.0a");
+  pinMode(Ain1,OUTPUT);
+  pinMode(Ain2,OUTPUT);
+  pinMode(Apwm,OUTPUT);
+  pinMode(Bin1,OUTPUT);
+  pinMode(Bin2,OUTPUT);
+  pinMode(Bpwm,OUTPUT);
+  pinMode(Cin1,OUTPUT);
+  pinMode(Cin2,OUTPUT);
+  pinMode(Cpwm,OUTPUT);
+  pinMode(Din1,OUTPUT);
+  pinMode(Din2,OUTPUT);
+  pinMode(Dpwm,OUTPUT);
+  //initializing outputs
+  
+}
+////////////Functions/////////////
+void mappa(){
+
+  i=Ry;
+  xyz= map(i,0,-180,0,255);
+  //mapping axis coordinates
+}
+
+void key()
+{
+ Lx=ps5.data.analog.stick.lx;
+ Ly=ps5.data.analog.stick.ly;
+ Rx=ps5.data.analog.stick.rx;
+ Ry=ps5.data.analog.stick.ry;  
+}
+
+  
+void front()
+{
+  analogWrite(Apwm,250);
+  digitalWrite(Ain1,HIGH);
+  digitalWrite(Ain2,LOW);
+  analogWrite(Dpwm,250);
+  digitalWrite(Bin1,HIGH);
+  digitalWrite(Bin2,LOW);
+  analogWrite(Bpwm,250);
+  digitalWrite(Din1,HIGH);
+  digitalWrite(Din2,LOW);
+  analogWrite(Cpwm,250);
+  digitalWrite(Cin1,HIGH);
+  digitalWrite(Cin2,LOW);
+}
+void back()
+{
+  analogWrite(Apwm,250);
+  digitalWrite(Ain1,LOW);
+  digitalWrite(Ain2,HIGH);
+  analogWrite(Dpwm,250);
+  digitalWrite(Bin1,LOW);
+  digitalWrite(Bin2,HIGH);
+  analogWrite(Bpwm,250);
+  digitalWrite(Din1,LOW);
+  digitalWrite(Din2,HIGH);
+  analogWrite(Cpwm,250);
+  digitalWrite(Cin1,LOW);
+  digitalWrite(Cin2,HIGH);
+}
+void right()
+{
+  analogWrite(Apwm,30);
+  digitalWrite(Ain1,LOW);
+  digitalWrite(Ain2,HIGH);
+  analogWrite(Dpwm,250);
+  digitalWrite(Bin1,HIGH);
+  digitalWrite(Bin2,LOW);
+  analogWrite(Bpwm,30);
+  digitalWrite(Din1,LOW);
+  digitalWrite(Din1,HIGH);
+  analogWrite(Cpwm,250);
+  digitalWrite(Cin1,HIGH);
+  digitalWrite(Cin2,LOW);
+
+}
+void left()
+{
+  analogWrite(Apwm,250);
+  digitalWrite(Ain1,HIGH);
+  digitalWrite(Ain2,LOW);
+  analogWrite(Dpwm,30);
+  digitalWrite(Bin1,HIGH);
+  digitalWrite(Bin2,LOW);
+  analogWrite(Bpwm,250);
+  digitalWrite(Din1,LOW);
+  digitalWrite(Din2,HIGH);
+  analogWrite(Cpwm,30);
+  digitalWrite(Cin1,LOW);
+  digitalWrite(Cin2,HIGH);
+}
+/*void clk()
+{
+  analogWrite(Apwm,250);
+  digitalWrite(Ain1,LOW);
+  digitalWrite(Ain2,HIGH);
+  analogWrite(Dpwm,250);
+  digitalWrite(Bin1,LOW);
+  digitalWrite(Bin2,HIGH);
+  analogWrite(Bpwm,250);
+  digitalWrite(Din1,HIGH);
+  digitalWrite(Din2,LOW);
+  analogWrite(Cpwm,250);
+  digitalWrite(Cin1,HIGH);
+  digitalWrite(Cin2,LOW);
+}*/
+void stop()
+{
+  digitalWrite(Ain1,LOW);
+  digitalWrite(Ain2,LOW);
+  digitalWrite(Bin1,LOW);
+  digitalWrite(Bin2,LOW);
+  digitalWrite(Din1,LOW);
+  digitalWrite(Din2,LOW);
+  digitalWrite(Cin1,LOW);
+  digitalWrite(Cin2,LOW);
+}
+/////////////////loops///////////////
+void loop() 
+{
+  if(Ly <-30)
+  {
+while(Ly <-30)
+{
+  front();
+  mappa();
+  key();
+  Serial.println(Ly);
+  
+}
+
+}
+else if(Ly > 30)
+{
+while(Ly > 30)
+{
+  back();
+  mappa();
+  Serial.println(Ly);
+  key();
+}
+}
+else if(Lx > 30)
+{
+while(Lx > 30)
+{
+  right();
+  Serial.println(Lx);
+  mappa();
+  key();
+}
+}
+else if(Lx < -30)
+{
+while(Lx < -30)
+{
+  mappa();
+ 
+  left();
+  Serial.println(Lx);
+  key();
+}
+}
+else
+{
+  stop();
+  Serial.println(Ly,Lx);
+}
+}
