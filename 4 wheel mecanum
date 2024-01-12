@@ -1,0 +1,149 @@
+//mecanum wheel drive
+#include<Ps3Controller.h>
+int LFDir=1,LBDir=2,RFDir=3,RBDir=4,LFpwm=5,LBpwm=6,RFpwm=7,RBpwm=8; 
+float Lx,Rx,Ly,Ry;
+
+void setup() {
+  Serial.begin(115200);
+  Ps3.begin("00:00:00:00:00:0a");
+  Serial.println("Ready.");
+  pinMode(LFDir, OUTPUT);
+  pinMode(LBDir, OUTPUT);
+  pinMode(RFDir, OUTPUT);
+  pinMode(RBDir, OUTPUT);
+}
+
+void controls(){
+  Lx=Ps3.data.analog.stick.lx;
+  Ly=Ps3.data.analog.stick.ly; 
+  Ry=Ps3.data.analog.stick.ry;
+  Rx=Ps3.data.analog.stick.rx;
+}
+void forward() {
+  analogWrite(LFpwm, 100);
+  analogWrite(LBpwm, 100);
+  analogWrite(RFpwm, 100);
+  analogWrite(RBpwm, 100);
+  digitalWrite(LFDir, HIGH);
+  digitalWrite(LBDir, HIGH);
+  digitalWrite(RFDir, HIGH);
+  digitalWrite(RBDir, HIGH);
+}
+void backward(){
+  analogWrite(LFpwm, 100);
+  analogWrite(LBpwm, 100);
+  analogWrite(RFpwm, 100);
+  analogWrite(RBpwm, 100);
+  digitalWrite(LFDir, LOW);
+  digitalWrite(LBDir, LOW);
+  digitalWrite(RFDir, LOW);
+  digitalWrite(RBDir, LOW);
+}
+void stop() {
+  analogWrite(LFpwm, 0);
+  analogWrite(LBpwm, 0);
+  analogWrite(RFpwm, 0);
+  analogWrite(RBpwm, 0);
+}
+void clockwise() {
+  analogWrite(LFpwm, 100);
+  analogWrite(LBpwm, 100);
+  analogWrite(RFpwm, 100);
+  analogWrite(RBpwm, 100);
+  digitalWrite(LFDir, HIGH);
+  digitalWrite(LBDir, HIGH);
+  digitalWrite(RFDir, LOW);
+  digitalWrite(RBDir, LOW);
+}
+void anticlockwise(){
+  analogWrite(LFpwm, 100);
+  analogWrite(LBpwm, 100);
+  analogWrite(RFpwm, 100);
+  analogWrite(RBpwm, 100);
+  digitalWrite(LFDir, LOW);
+  digitalWrite(LBDir, LOW);
+  digitalWrite(RFDir, HIGH);
+  digitalWrite(RBDir, HIGH);
+}
+void right() {
+  analogWrite(LFpwm, 100);
+  analogWrite(LBpwm, 100);
+  analogWrite(RFpwm, 100);
+  analogWrite(RBpwm, 100);
+  digitalWrite(LFDir, HIGH);
+  digitalWrite(LBDir, LOW);
+  digitalWrite(RFDir, LOW);
+  digitalWrite(RBDir, HIGH);
+
+}
+void left() {
+  analogWrite(LFpwm, 100);
+  analogWrite(LBpwm, 100);
+  analogWrite(RFpwm, 100);
+  analogWrite(RBpwm, 100);
+  digitalWrite(LFDir, LOW);
+  digitalWrite(LBDir, HIGH);
+  digitalWrite(RFDir, HIGH);
+  digitalWrite(RBDir, LOW);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  controls();
+  while(Ly<-30)
+  {
+    forward();
+    Serial.println(Ly);
+    controls();
+
+  }
+  while(Ly>30)
+  {
+    backward();
+    Serial.println(Ly);
+    controls();
+    
+  }
+  
+  while(Lx<-30)
+  {
+    left();
+    Serial.println(Lx);
+    controls();
+
+  }
+  while(Lx>30)
+  {
+    right();
+    Serial.println(Lx);
+    Controls();
+    
+  }
+  // while(Lx==-1.00 && Ly==-1.00)
+  // {
+  //   stop();
+  //   Serial.println(Lx,Ly);
+  //   controls();
+
+
+  // }
+  while(Rx<-30)
+  {
+
+    anticlockwise();
+    Serial.println(Rx);
+    controls();
+
+  }
+
+  while(Rx>30)
+  {
+
+    clockwise();
+    Serial.println(Rx);
+    controls();
+
+  }
+  stop();
+
+}
